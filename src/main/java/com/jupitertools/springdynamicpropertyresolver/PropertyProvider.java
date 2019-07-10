@@ -10,7 +10,8 @@ import org.springframework.util.Assert;
 /**
  * Created on 2019-07-10
  * <p>
- * TODO: replace on the JavaDoc
+ * Wrapper under the method which annotated by @DynamicTestProperty,
+ * supposed to validating this method and retrieving a value of the {@link TestPropertyValues}
  *
  * @author Korovin Anatoliy
  */
@@ -25,11 +26,14 @@ public class PropertyProvider {
 	 */
 	public PropertyProvider(Method method) {
 
+		Assert.notNull(method.getAnnotation(DynamicTestProperty.class),
+		               "PropertyProvider must be annotated by @DynamicTestProperty");
+
 		Assert.isTrue(Modifier.isStatic(method.getModifiers()),
-		              "Annotation DynamicTestProperty must be used on a static method.");
+		              "Annotation @DynamicTestProperty must be used on a static method.");
 
 		Assert.isTrue(method.getReturnType().equals(TestPropertyValues.class),
-		              "DynamicTestProperty method must return the instance of TestPropertyValues.");
+		              "@DynamicTestProperty method must return the instance of TestPropertyValues.");
 
 		this.method = method;
 	}

@@ -1,8 +1,6 @@
-package com.jupitertools.springdynamicpropertyresolver;
+package com.jupitertools.springdynamicpropertyresolver.integrationtests;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.jupitertools.springdynamicpropertyresolver.DynamicTestProperty;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testcontainers.containers.PostgreSQLContainer;

@@ -1,5 +1,7 @@
-package com.jupitertools.springdynamicpropertyresolver;
+package com.jupitertools.springdynamicpropertyresolver.integrationtests;
 
+
+import com.jupitertools.springdynamicpropertyresolver.DynamicTestProperty;
 
 import org.springframework.boot.test.util.TestPropertyValues;
 

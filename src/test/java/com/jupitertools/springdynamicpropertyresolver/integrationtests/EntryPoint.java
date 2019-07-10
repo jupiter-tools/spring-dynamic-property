@@ -1,4 +1,4 @@
-package com.jupitertools.springdynamicpropertyresolver;
+package com.jupitertools.springdynamicpropertyresolver.integrationtests;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
