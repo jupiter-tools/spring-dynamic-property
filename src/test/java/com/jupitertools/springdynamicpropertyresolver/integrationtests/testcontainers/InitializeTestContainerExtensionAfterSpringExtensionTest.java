@@ -1,4 +1,4 @@
-package com.jupitertools.springdynamicpropertyresolver.integrationtests;
+package com.jupitertools.springdynamicpropertyresolver.integrationtests.testcontainers;
 
 import com.jupitertools.springdynamicpropertyresolver.DynamicTestProperty;
 import org.junit.jupiter.api.Test;

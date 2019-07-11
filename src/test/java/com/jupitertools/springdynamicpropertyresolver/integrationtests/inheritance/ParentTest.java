@@ -1,10 +1,13 @@
-package com.jupitertools.springdynamicpropertyresolver.integrationtests;
+package com.jupitertools.springdynamicpropertyresolver.integrationtests.inheritance;
 
 
 import com.jupitertools.springdynamicpropertyresolver.DynamicTestProperty;
 
 import org.springframework.boot.test.util.TestPropertyValues;
 
+/**
+ * @author Korovin Anatoliy
+ */
 public abstract class ParentTest {
 
 	@DynamicTestProperty

@@ -1,4 +1,4 @@
-package com.jupitertools.springdynamicpropertyresolver.integrationtests;
+package com.jupitertools.springdynamicpropertyresolver.integrationtests.inheritance;
 
 
 import com.jupitertools.springdynamicpropertyresolver.DynamicTestProperty;
@@ -10,6 +10,11 @@ import org.springframework.boot.test.util.TestPropertyValues;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * Tests for {@link DynamicTestProperty}
+ *
+ * @author Korovin Anatoliy
+ */
 @SpringBootTest
 class UseSameDynamicPropertyAsInSuperClassTest extends ParentTest {
 

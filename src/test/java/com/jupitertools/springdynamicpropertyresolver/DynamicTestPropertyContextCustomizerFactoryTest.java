@@ -25,10 +25,15 @@ import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.mock.env.MockEnvironment;
 import org.springframework.test.context.ContextCustomizer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests for {@link DynamicTestPropertyContextCustomizerFactory}
@@ -138,6 +143,4 @@ class DynamicTestPropertyContextCustomizerFactoryTest {
             return "a=123";
         }
     }
-
-
 }

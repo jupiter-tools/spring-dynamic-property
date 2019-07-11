@@ -17,9 +17,13 @@
 package com.jupitertools.springdynamicpropertyresolver;
 
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
+
+import org.junit.platform.commons.util.AnnotationUtils;
 
 import org.springframework.test.context.ContextConfigurationAttributes;
 import org.springframework.test.context.ContextCustomizer;
@@ -41,10 +45,24 @@ public class DynamicTestPropertyContextCustomizerFactory
 	public ContextCustomizer createContextCustomizer(Class<?> testClass,
 	                                                 List<ContextConfigurationAttributes> list) {
 
-		ReflectionUtils.doWithMethods(testClass, this::getPropertySupplierFromMethod);
-
-		return propertyProviders.isEmpty() ? null
+		processDynamicPropertyAnnotation(testClass);
+		processIncludeDynamicPropertyAnnotation(testClass);
+		return propertyProviders.isEmpty() ? new DynamicTestPropertyContextCustomizer(Collections.emptySet())
 		                                   : new DynamicTestPropertyContextCustomizer(propertyProviders);
+	}
+
+	private void processDynamicPropertyAnnotation(Class<?> testClass){
+		ReflectionUtils.doWithMethods(testClass, this::getPropertySupplierFromMethod);
+	}
+
+	private void processIncludeDynamicPropertyAnnotation(Class<?> testClass) {
+		//This is AnnotationUtils from junit5
+		// because this version works fine with repeatable and inherited
+		AnnotationUtils.findRepeatableAnnotations(testClass, IncludeDynamicProperty.class)
+					   .stream()
+					   .map(IncludeDynamicProperty::value)
+					   .flatMap(Stream::of)
+					   .forEach(this::processDynamicPropertyAnnotation);
 	}
 
 	private void getPropertySupplierFromMethod(Method method) {
