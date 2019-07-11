@@ -48,7 +48,7 @@ public class PropertyProvider {
 			this.method.setAccessible(true);
 			return (TestPropertyValues) this.method.invoke(null);
 		} catch (Exception ex) {
-			throw new DynamicTestPropertyException(
+			throw new IllegalArgumentException(
 					"Error while trying to get a value of dynamic properties.", ex);
 		}
 	}
