@@ -12,5 +12,5 @@ addons:
       secure: $SONAR_CLOUD_KEY
 
 after_success:
-  - mvn cobertura:cobertura
+#  - mvn cobertura:cobertura
   - bash <(curl -s https://codecov.io/bash)
