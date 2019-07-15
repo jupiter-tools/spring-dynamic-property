@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Korovin Anatoliy
  */
-@SpringBootTest
+@SpringBootTest(classes = UseDynamicPropertyInSuperClassTest.class)
 class UseDynamicPropertyInSuperClassTest extends ParentTest {
 
 	@Value("${first}")

@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Korovin Anatoliy
  */
 @AnnotationWithDynamicProperty
-@SpringBootTest
+@SpringBootTest(classes = IncludeDynamicTestPropertyByAnnotationTest.class)
 class IncludeDynamicTestPropertyByAnnotationTest {
 
     @Value("${key}")

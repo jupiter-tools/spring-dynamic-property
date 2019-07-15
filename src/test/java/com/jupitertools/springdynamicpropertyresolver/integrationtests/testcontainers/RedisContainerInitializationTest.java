@@ -3,7 +3,7 @@ package com.jupitertools.springdynamicpropertyresolver.integrationtests.testcont
 import com.jupitertools.springdynamicpropertyresolver.DynamicTestProperty;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -16,29 +16,31 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = InitializeTestContainerExtensionAfterSpringExtensionTest.class)
+@SpringBootTest(classes = RedisContainerInitializationTest.class)
 @Testcontainers
-class InitializeTestContainerExtensionAfterSpringExtensionTest {
+class RedisContainerInitializationTest {
+
+	private static final Integer REDIS_PORT = 6379;
 
 	@Container
-	private static PostgreSQLContainer postgresqlContainer = new PostgreSQLContainer();
+	private static GenericContainer redis = new GenericContainer("redis:latest")
+			.withExposedPorts(REDIS_PORT);
 
 	@DynamicTestProperty
 	private static TestPropertyValues props() {
-		return TestPropertyValues.of("jdbc=" + postgresqlContainer.getJdbcUrl());
+		return TestPropertyValues.of("spring.redis.host=" + redis.getContainerIpAddress(),
+		                             "spring.redis.port=" + redis.getMappedPort(REDIS_PORT));
 	}
 
-	@Value("${jdbc}")
-	private String jdbc;
+	@Value("${spring.redis.port}")
+	private String port;
+
+	@Value("${spring.redis.host}")
+	private String host;
 
 	@Test
 	void container() {
-		String pattern = String.format("^(jdbc:postgresql://%s:)(%d)(/test)$",
-		                               postgresqlContainer.getContainerIpAddress(),
-		                               postgresqlContainer.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT));
-
-		assertThat(jdbc).containsPattern(pattern);
+		assertThat(host).isNotNull();
+		assertThat(port).isNotNull();
 	}
 }
-
-
