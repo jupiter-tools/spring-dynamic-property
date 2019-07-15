@@ -1,8 +1,7 @@
-:toc: preamble
-
 # Spring Dynamic Property
 
 image:https://travis-ci.com/jupiter-tools/spring-dynamic-property.svg?branch=master["Build Status", link="https://travis-ci.com/jupiter-tools/spring-dynamic-property"]
+image:https://codecov.io/gh/jupiter-tools/spring-dynamic-property/branch/master/graph/badge.svg[link="https://codecov.io/gh/jupiter-tools/spring-dynamic-property"]
 
 
 Tools to define a dynamic property in Spring Boot integration tests.
