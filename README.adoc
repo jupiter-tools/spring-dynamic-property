@@ -34,7 +34,20 @@ even use of a static method not allowed here.
 ## How to define a dynamic value of properties in tests
 
 `spring-dynamic-property` supports an ability to define a dynamic value of properties and
-declare static property provider methods in your test class:
+declare static property provider methods in your test class.
+
+All that you need to use the `spring-dynamic-property` is the next dependency:
+
+[source,java]
+----
+<dependency>
+    <groupId>com.jupiter-tools</groupId>
+    <artifactId>spring-dynamic-property</artifactId>
+    <version>0.1</version>
+</dependency>
+----
+
+Let's look at the simple example of using a dynamic value in properties:
 
 ### Simple example
 
@@ -69,9 +82,9 @@ after start Redis test container:
 
 [source, java]
 ----
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Testcontainers
+@ExtendWith(SpringExtension.class)
 class RedisTestcontainersTest {
 
     private static final Integer REDIS_PORT = 6379;
