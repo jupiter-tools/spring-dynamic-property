@@ -1,0 +1,103 @@
+:toc: preamble
+
+# Spring Dynamic Property
+
+image:https://travis-ci.com/jupiter-tools/spring-dynamic-property.svg?branch=master["Build Status", link="https://travis-ci.com/jupiter-tools/spring-dynamic-property"]
+
+
+Tools to define a dynamic property in Spring Boot integration tests.
+
+## How to set a property value in tests by the standard spring mechanics
+
+In the Spring Framework we have an annotation `TestPropertySource` which allows
+define a final property value:
+
+[source, java]
+----
+@TestPropertySource(properties = "my.variable=12345")
+class FinalPropertyValueTest {
+
+	@Value("${my.variable}")
+	private String variable;
+
+	@Test
+	void testVariableValue() {
+		assertThat(variable).isEqualTo("12345");
+	}
+}
+----
+
+On this way we have a small limitation -
+we cannot define a dynamic value of properties in this annotation,
+even use of a static method not allowed here.
+
+## How to define a dynamic value of properties in tests
+
+`spring-dynamic-property` supports an ability to define a dynamic value of properties and
+declare static property provider methods in your test class:
+
+### Simple example
+
+[source, java]
+----
+@SpringBootTest
+class SimpleTest {
+
+	@DynamicTestProperty
+	private static TestPropertyValues props() {
+		return TestPropertyValues
+				.of("variable=" + (int) Math.sqrt(64));
+	}
+
+	@Value("${variable}")
+	private int variable;
+
+	@Test
+	void testSqrt() {
+		assertThat(variable).isEqualTo(8);
+	}
+}
+----
+
+### Example with the using of TestContainers
+
+A most primary case to use dynamic properties is a TestContainers
+initialization in your spring-boot applications.
+
+Let's consider an example of initialization standard spring-boot properties
+after start Redis test container:
+
+[source, java]
+----
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@Testcontainers
+class RedisTestcontainersTest {
+
+    private static final Integer REDIS_PORT = 6379;
+
+    @Container
+    private static GenericContainer redis = new GenericContainer("redis:latest")
+            .withExposedPorts(REDIS_PORT);
+
+    @DynamicTestProperty
+    private static TestPropertyValues props() {
+        return TestPropertyValues.of("spring.redis.host=" + redis.getContainerIpAddress(),
+                                     "spring.redis.port=" + redis.getMappedPort(REDIS_PORT));
+    }
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Test
+    void readWriteValueByRedisTemplate() {
+        String key = "test";
+        String value = "sabracadabra";
+        // Act
+        redisTemplate.opsForValue().set(key, value);
+        // Assert
+        assertThat(redisTemplate.opsForValue().get(key)).isEqualTo(value);
+    }
+
+}
+----
