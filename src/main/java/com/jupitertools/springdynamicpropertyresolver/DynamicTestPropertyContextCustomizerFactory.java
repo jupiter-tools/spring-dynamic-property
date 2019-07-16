@@ -56,8 +56,9 @@ public class DynamicTestPropertyContextCustomizerFactory
 	}
 
 	private void processIncludeDynamicPropertyAnnotation(Class<?> testClass) {
-		//This is AnnotationUtils from junit5
-		// because this version works fine with repeatable and inherited
+		// AnnotationUtils is from junit5,
+		// because this version works fine with repeatable and inherited.
+		// Since spring-framework 5.2.0 this can be replace on the MergedAnnotations
 		AnnotationUtils.findRepeatableAnnotations(testClass, IncludeDynamicProperty.class)
 					   .stream()
 					   .map(IncludeDynamicProperty::value)
