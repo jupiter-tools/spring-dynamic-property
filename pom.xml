@@ -2,20 +2,67 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.5.RELEASE</version>
+        <version>[2.0.0.RELEASE,2.1.6.RELEASE]</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
+    <!-- ARTIFACT INFO -->
     <groupId>com.jupiter-tools</groupId>
     <artifactId>spring-dynamic-property</artifactId>
     <version>0.1-SNAPSHOT</version>
     <name>spring-dynamic-property</name>
-    <description>Spring DynamicProperty resolver</description>
+    <description>Spring DynamicProperty Resolver</description>
+    <!-- ARTIFACT INFO -->
+
+    <!-- OSS Details -->
+    <url>https://github.com/jupiter-tools/spring-dynamic-property</url>
+    <scm>
+        <url>https://github.com/jupiter-tools/spring-dynamic-property</url>
+        <connection>scm:git:git://github.com/jupiter-tools/spring-dynamic-property.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/jupiter-tools/spring-dynamic-property.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+    <issueManagement>
+        <url>https://github.com/jupiter-tools/spring-dynamic-property/issues</url>
+    </issueManagement>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>antkorwin</id>
+            <name>Anatoliy Korovin</name>
+            <email>antkorwin@gmail.com</email>
+            <url>antkorwin.com</url>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+    <!-- OSS Details -->
 
     <properties>
         <java.version>1.8</java.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <junit.vintage.version>5.5.0</junit.vintage.version>
         <junit-jupiter.version>5.5.0</junit-jupiter.version>
         <junit-platform.version>1.5.0</junit-platform.version>
@@ -65,6 +112,7 @@
         </dependency>
         <!-- Junit 5 -->
 
+        <!-- TestContainers -->
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
@@ -83,12 +131,101 @@
             <version>1.11.3</version>
             <scope>test</scope>
         </dependency>
-
+        <!-- TestContainers -->
     </dependencies>
+
+
+    <!-- SONATYPE DEPLOY PROFILE -->
+    <profiles>
+        <profile>
+            <id>central</id>
+            <build>
+                <plugins>
+                    <!-- GPG signing -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- GPG signing -->
+
+                    <!-- SONATYPE staging -->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.7</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                    <!-- SONATYPE staging -->
+
+                    <!-- SOURCE attaching -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- SOURCE attaching -->
+
+                    <!-- DOCS attaching -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <configuration>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- DOCS attaching -->
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    <!-- SONATYPE DEPLOY PROFILE -->
 
     <build>
         <plugins>
-            <!--- surefire -->
+            <!-- MVN COMPILER -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <!-- MVN COMPILER -->
+
+            <!--- SUREFIRE -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -101,8 +238,9 @@
                     </includes>
                 </configuration>
             </plugin>
+            <!--- SUREFIRE -->
 
-            <!-- tests report -->
+            <!-- Tests REPORTING -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -121,9 +259,25 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
+                    <!-- attached to Maven test phase -->
                 </executions>
             </plugin>
+            <!-- Tests REPORTING -->
 
+            <!-- SOURCE attaching -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- SOURCE attaching -->
         </plugins>
 
         <resources>
