@@ -13,6 +13,8 @@ define a final property value:
 
 [source, java]
 ----
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
 @TestPropertySource(properties = "my.variable=12345")
 class FinalPropertyValueTest {
 
@@ -37,7 +39,7 @@ declare static property provider methods in your test class.
 
 All that you need to use the `spring-dynamic-property` is the next dependency:
 
-[source,java]
+[source,xml]
 ----
 <dependency>
     <groupId>com.jupiter-tools</groupId>
@@ -53,6 +55,7 @@ Let's look at the simple example of using a dynamic value in properties:
 [source, java]
 ----
 @SpringBootTest
+@ExtendWith(SpringExtension.class)
 class SimpleTest {
 
 	@DynamicTestProperty
@@ -110,6 +113,5 @@ class RedisTestcontainersTest {
         // Assert
         assertThat(redisTemplate.opsForValue().get(key)).isEqualTo(value);
     }
-
 }
 ----

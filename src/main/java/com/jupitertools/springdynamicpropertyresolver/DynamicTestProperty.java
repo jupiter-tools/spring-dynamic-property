@@ -26,7 +26,10 @@ import java.lang.annotation.Target;
  * before test execution. You can use this annotation on the method which provides a
  * dynamic value of properties and this value will be evaluated while start application
  * context for tests.
- *
+ * <p>
+ * This method must be static
+ * and must return a {@link org.springframework.boot.test.util.TestPropertyValues}
+ * <p>
  * @author Anatoliy Korovin
  */
 @Retention(RetentionPolicy.RUNTIME)
