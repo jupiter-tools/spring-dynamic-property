@@ -146,7 +146,7 @@ public class DynamicPropertyHolder {
 }
 ----
 
-and now you can use this annotation in your tests to set this property for tests:
+and now you can use this annotation in your tests to set this property:
 
 [source, java]
 ----
