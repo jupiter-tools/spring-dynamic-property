@@ -115,3 +115,52 @@ class RedisTestcontainersTest {
     }
 }
 ----
+
+## Include dynamic property in meta-annotations
+
+If you need to make you own annotation with dynamic property declaration
+then you can specify a file with `@DynamicProperty` methods
+by the using of `@IncludeDynamicProperty` annotation
+as you can see in the example below:
+
+[source, java]
+----
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@IncludeDynamicProperty(DynamicPropertyHolder.class)
+public @interface AnnotationWithDynamicProperty {
+
+}
+----
+
+the file with dynamic properties:
+
+[source, java]
+----
+public class DynamicPropertyHolder {
+
+    @DynamicTestProperty
+    private static TestPropertyValues property(){
+        return TestPropertyValues.of("key=12345");
+    }
+}
+----
+
+and now you can use this annotation in your tests to set this property for tests:
+
+[source, java]
+----
+@SpringBootTest
+@AnnotationWithDynamicProperty
+class MetaAnnotationTest {
+
+    @Value("${key}")
+    private String key;
+
+    @Test
+    void checkPropertyValueInjectInAnnotation() {
+        assertThat(key).isEqualTo("12345");
+    }
+}
+----
+
